@@ -1,1269 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>ALPHA DATA ENTRY SYSTEM - SECURE ACCESS</title>
-    
-    <!-- Import fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #1a1b3b;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .login-container {
-            max-width: 400px;
-            width: 100%;
-            background: #24264a;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.5s ease;
-            border: 1px solid #3d3f6b;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-header h2 {
-            color: #ffffff;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .login-header h2 span {
-            color: #a384ff;
-        }
-
-        .login-header p {
-            color: #9a9bc7;
-            font-size: 14px;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 16px;
-            background: #2e3057;
-            border: 2px solid #3d3f6b;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: 'Inter', sans-serif;
-            color: #ffffff;
-            transition: all 0.3s;
-        }
-
-        .login-input::placeholder {
-            color: #7a7cb0;
-        }
-
-        .login-input:focus {
-            outline: none;
-            border-color: #a384ff;
-            box-shadow: 0 0 0 3px rgba(163, 132, 255, 0.2);
-        }
-
-        .login-input.error {
-            border-color: #ff8a9f;
-            background-color: #3d2e40;
-        }
-
-        .login-btn {
-            background: #a384ff;
-            color: #1a1b3b;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 15px rgba(163, 132, 255, 0.3);
-        }
-
-        .login-btn:hover {
-            background: #b89fff;
-            transform: translateY(-2px);
-        }
-
-        .login-error {
-            color: #ff8a9f;
-            font-size: 14px;
-            text-align: center;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .login-error.show {
-            display: block;
-        }
-
-        .login-note {
-            text-align: center;
-            margin-top: 20px;
-            color: #7a7cb0;
-            font-size: 13px;
-            border-top: 1px solid #3d3f6b;
-            padding-top: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: #24264a;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.5s ease;
-            display: none;
-            border: 1px solid #3d3f6b;
-        }
-
-        .container.show {
-            display: block;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #3d3f6b;
-        }
-
-        .header h1 {
-            color: #ffffff;
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
-
-        .header h1 span {
-            color: #a384ff;
-        }
-
-        .header p {
-            color: #9a9bc7;
-            font-size: 16px;
-            font-weight: 400;
-        }
-
-        .user-info-bar {
-            background: #2e3057;
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #3d3f6b;
-        }
-
-        .welcome-user {
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .welcome-user span {
-            color: #a384ff;
-            font-size: 16px;
-        }
-
-        .logout-btn {
-            background: transparent;
-            border: 2px solid #3d3f6b;
-            color: #9a9bc7;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .logout-btn:hover {
-            border-color: #a384ff;
-            color: #a384ff;
-            background: rgba(163, 132, 255, 0.1);
-        }
-
-        .user-id-display {
-            background: #2e3057;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            border: 2px dashed #3d3f6b;
-            text-align: center;
-        }
-
-        .user-id-label {
-            font-size: 14px;
-            color: #9a9bc7;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .user-id-value {
-            font-size: 48px;
-            font-weight: 700;
-            color: #a384ff;
-            letter-spacing: 2px;
-        }
-
-        .timestamp {
-            font-size: 14px;
-            color: #9a9bc7;
-            margin-top: 5px;
-            font-family: monospace;
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-box {
-            background: #2e3057;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            border: 1px solid #3d3f6b;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: #9a9bc7;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 5px;
-        }
-
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 8px;
-            letter-spacing: 0.3px;
-        }
-
-        .required-star {
-            color: #ff8a9f;
-            margin-left: 4px;
-            font-size: 16px;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            background: #2e3057;
-            border: 2px solid #3d3f6b;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: 'Inter', sans-serif;
-            color: #ffffff;
-            transition: all 0.3s;
-        }
-
-        input::placeholder {
-            color: #7a7cb0;
-        }
-
-        input:hover {
-            border-color: #a384ff;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #a384ff;
-            box-shadow: 0 0 0 3px rgba(163, 132, 255, 0.2);
-        }
-
-        input.error {
-            border-color: #ff8a9f;
-            background-color: #3d2e40;
-        }
-
-        input[readonly] {
-            background: #1e203b;
-            color: #a384ff;
-            cursor: not-allowed;
-        }
-
-        .file-upload-area {
-            border: 3px dashed #a384ff;
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            background: #2e3057;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-            animation: surprisePulse 2s infinite;
-        }
-
-        @keyframes surprisePulse {
-            0%, 100% {
-                border-color: #a384ff;
-                box-shadow: 0 0 0 0 rgba(163, 132, 255, 0.3);
-            }
-            50% {
-                border-color: #b89fff;
-                box-shadow: 0 0 20px 0 rgba(163, 132, 255, 0.3);
-            }
-        }
-
-        .file-upload-area:hover {
-            border-color: #ff8a9f;
-            background: #383b68;
-        }
-
-        .file-upload-icon {
-            font-size: 48px;
-            color: #a384ff;
-            margin-bottom: 10px;
-        }
-
-        .file-upload-text {
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .file-upload-hint {
-            color: #9a9bc7;
-            font-size: 13px;
-        }
-
-        .file-info {
-            background: #2e3057;
-            border: 2px solid #a384ff;
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .file-name {
-            font-weight: 600;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .remove-file {
-            color: #ff8a9f;
-            cursor: pointer;
-            font-size: 20px;
-            padding: 0 8px;
-        }
-
-        .remove-file:hover {
-            color: #ffa5b5;
-        }
-
-        .error-message {
-            color: #ff8a9f;
-            font-size: 12px;
-            margin-top: 6px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .error-message::before {
-            content: "✕";
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 16px 24px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: #a384ff;
-            color: #1a1b3b;
-            box-shadow: 0 4px 15px rgba(163, 132, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: #b89fff;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #ffffff;
-            border: 2px solid #3d3f6b;
-        }
-
-        .btn-secondary:hover {
-            background: #2e3057;
-            border-color: #a384ff;
-            transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        .status {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .status.show {
-            display: flex;
-        }
-
-        .status.success {
-            background: #2e3057;
-            color: #a384ff;
-            border: 1px solid #a384ff;
-        }
-
-        .status.error {
-            background: #3d2e40;
-            color: #ff8a9f;
-            border: 1px solid #ff8a9f;
-        }
-
-        .recent-entries {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #3d3f6b;
-        }
-
-        .recent-entries h3 {
-            color: #ffffff;
-            font-size: 18px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .entries-list {
-            max-height: 200px;
-            overflow-y: auto;
-            border-radius: 12px;
-            border: 1px solid #3d3f6b;
-            background: #2e3057;
-        }
-
-        .entry-item {
-            padding: 12px 15px;
-            border-bottom: 1px solid #3d3f6b;
-            font-size: 13px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #ffffff;
-        }
-
-        .entry-item:last-child {
-            border-bottom: none;
-        }
-
-        .entry-item:nth-child(even) {
-            background: #24264a;
-        }
-
-        .entry-info {
-            color: #ffffff;
-        }
-
-        .entry-time {
-            color: #9a9bc7;
-            font-size: 11px;
-            font-family: monospace;
-        }
-
-        .verification-badge-small {
-            background: #a384ff;
-            color: #1a1b3b;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-            margin-left: 8px;
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #2e3057;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #a384ff;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #b89fff;
-        }
-
-        @media (max-width: 640px) {
-            .container, .login-container {
-                padding: 20px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-group.full-width {
-                grid-column: span 1;
-            }
-
-            .stats-container {
-                grid-template-columns: 1fr;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .user-id-value {
-                font-size: 36px;
-            }
-
-            .user-info-bar {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ALPHA Surveillance Board — Client Intake</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#050807;
+      --panel:#07120f;
+      --panel2:#0b1814;
+      --green:#00ff9d;
+      --cyan:#22e6ff;
+      --blue:#6aa8ff;
+      --orange:#ff9b42;
+      --purple:#b887ff;
+      --red:#ff3b4f;
+      --line:rgba(0,255,157,.25);
+      --line2:rgba(34,230,255,.2);
+      --muted:#8bbfb0;
+      --text:#dfffee;
+      --black:#000;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      min-height:100vh;
+      font-family:'Rajdhani',sans-serif;
+      color:var(--text);
+      background:
+        linear-gradient(rgba(0,255,157,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,157,.055) 1px, transparent 1px),
+        radial-gradient(circle at 50% -10%,rgba(0,255,157,.15),transparent 38%),
+        radial-gradient(circle at 85% 20%,rgba(34,230,255,.11),transparent 32%),
+        #030504;
+      background-size:42px 42px,42px 42px,100% 100%,100% 100%,100% 100%;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+      background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.12) 50%,transparent 100%);
+      mix-blend-mode:screen;
+    }
+    .wrap{position:relative;z-index:1;max-width:1480px;margin:0 auto;padding:28px}
+    .topbar{
+      border:1px solid var(--line);background:rgba(5,10,9,.86);
+      box-shadow:0 0 32px rgba(0,255,157,.09), inset 0 0 0 1px rgba(34,230,255,.06);
+      display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:16px 22px;margin-bottom:18px;
+    }
+    .title{text-align:center;font-family:'Orbitron',sans-serif;color:#75ffe0;font-size:23px;letter-spacing:.8px;text-shadow:0 0 12px rgba(0,255,157,.45)}
+    .sub{font-size:14px;color:var(--blue);letter-spacing:1px;text-align:center;margin-top:5px}
+    .logo{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--green);box-shadow:0 0 20px rgba(0,255,157,.3);font-family:'Orbitron';font-weight:900;color:var(--green);font-size:28px;background:#06100c}
+    .deadline{
+      position:sticky;top:0;z-index:50;margin-bottom:18px;
+      display:flex;align-items:center;justify-content:space-between;gap:15px;
+      border:1px solid rgba(255,59,79,.55);background:linear-gradient(90deg,rgba(255,59,79,.18),rgba(4,8,7,.92));
+      padding:12px 16px;box-shadow:0 0 22px rgba(255,59,79,.12)
+    }
+    .deadline b{font-family:'Orbitron';color:#ff6b78;font-size:14px;letter-spacing:1px}
+    .deathBtn{border:1px solid var(--red);background:#140306;color:#ffd9dd;border-radius:0;padding:10px 16px;font-family:'Orbitron';cursor:pointer;box-shadow:0 0 14px rgba(255,59,79,.25)}
+    .deathBtn.active{background:var(--red);color:#fff}
+    .tabs{display:flex;gap:10px;margin-bottom:18px}
+    .tab{flex:1;padding:14px;border:1px solid var(--line);background:#050b09;color:var(--muted);font-family:'Orbitron';cursor:pointer;letter-spacing:.8px}
+    .tab.active{background:linear-gradient(90deg,rgba(0,255,157,.22),rgba(34,230,255,.11));color:var(--green);box-shadow:0 0 18px rgba(0,255,157,.12)}
+    .panel{border:1px solid var(--line);background:rgba(3,7,6,.88);box-shadow:0 0 28px rgba(0,255,157,.08);padding:22px;margin-bottom:20px}
+    .panel h2,.stepTitle{font-family:'Orbitron';color:#66ffe0;font-size:18px;letter-spacing:1px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:10px;text-transform:uppercase}
+    .hide{display:none!important}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .col-3{grid-column:span 3}.col-4{grid-column:span 4}.col-6{grid-column:span 6}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
+    label{display:block;color:var(--cyan);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
+    input,select,textarea{
+      width:100%;background:#030706;color:#eafff6;border:1px solid rgba(34,230,255,.24);
+      padding:12px 13px;font-family:'Rajdhani';font-size:17px;outline:none;
+      box-shadow:inset 0 0 0 1px rgba(0,255,157,.04)
+    }
+    input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 12px rgba(0,255,157,.18)}
+    textarea{min-height:90px;resize:vertical}
+    .btn{border:1px solid var(--green);background:#06100c;color:var(--green);padding:12px 18px;font-family:'Orbitron';cursor:pointer;letter-spacing:.8px}
+    .btn:hover{background:rgba(0,255,157,.13)}
+    .btn.orange{border-color:var(--orange);color:var(--orange)}
+    .btn.red{border-color:var(--red);color:#ff8d98}
+    .actions{display:flex;justify-content:flex-end;gap:12px;margin-top:18px;flex-wrap:wrap}
+    .status{margin-top:14px;padding:12px;border:1px solid var(--line);color:var(--green);background:rgba(0,255,157,.08)}
+
+    .wizardTop{display:grid;grid-template-columns:270px 1fr;gap:18px}
+    .steps{border:1px solid var(--line);background:rgba(0,0,0,.28);padding:12px;align-self:start;position:sticky;top:74px}
+    .stepItem{padding:11px 10px;margin-bottom:7px;border-left:3px solid rgba(34,230,255,.2);color:var(--muted);font-weight:700;letter-spacing:.5px}
+    .stepItem.active{border-left-color:var(--green);background:rgba(0,255,157,.1);color:var(--green)}
+    .stepItem.done{color:#c9ffe9;border-left-color:rgba(0,255,157,.55)}
+    .progressOuter{height:9px;background:#020403;border:1px solid var(--line);margin-bottom:16px}
+    .progressInner{height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));box-shadow:0 0 12px rgba(0,255,157,.5)}
+    .preview{margin-top:15px;border:1px solid var(--line2);background:rgba(34,230,255,.05);padding:12px;color:#bdfff1;max-height:180px;overflow:auto;font-size:14px}
+    .preview b{color:var(--orange)}
+    table{width:100%;border-collapse:collapse;min-width:900px}.tableWrap{overflow-x:auto;border:1px solid var(--line)}
+    th{background:#07120f;color:var(--cyan);font-family:'Orbitron';font-size:12px;padding:10px;border:1px solid rgba(34,230,255,.18)}
+    td{padding:8px;border:1px solid rgba(34,230,255,.14);background:rgba(0,0,0,.25)}
+    td input,td select{padding:9px;font-size:15px}
+    .assetGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .assetCard{border:1px solid var(--line2);background:rgba(34,230,255,.04);padding:12px}.assetCard input[type=checkbox]{width:auto;margin-right:7px}
+    dialog{border:1px solid var(--red);background:#070606;color:var(--text);padding:0;max-width:560px;width:92%;box-shadow:0 0 40px rgba(255,59,79,.22)}
+    dialog::backdrop{background:rgba(0,0,0,.72)}
+    .modalHead{padding:14px 16px;background:rgba(255,59,79,.18);font-family:'Orbitron';color:#ff7b86;border-bottom:1px solid var(--red)}
+    .modalBody{padding:16px}.modalFoot{padding:14px 16px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid rgba(255,59,79,.35)}
+    @media(max-width:900px){.wizardTop{grid-template-columns:1fr}.steps{position:relative;top:0}.col-3,.col-4,.col-6,.col-8,.col-12{grid-column:span 12}.assetGrid{grid-template-columns:1fr}.topbar{grid-template-columns:1fr}.logo{margin:auto}.tabs{flex-direction:column}}
+  </style>
 </head>
 <body>
-    <!-- Login Container -->
-    <div class="login-container" id="loginContainer">
-        <div class="login-header">
-            <h2>ALPHA <span>SECURE</span></h2>
-            <p>Enter your credentials to access the data entry system</p>
-        </div>
-
-        <div class="login-form">
-            <input type="text" id="username" class="login-input" placeholder="Username">
-            <input type="password" id="password" class="login-input" placeholder="Password">
-            <button class="login-btn" id="loginBtn">
-                <span>🔐</span> SIGN IN
-            </button>
-            <div class="login-error" id="loginError">Invalid username or password</div>
-        </div>
-
-        <div class="login-note">
-            <p>Authorized personnel only</p>
-            <small>Contact system administrator for access</small>
-        </div>
+<div class="wrap">
+  <div class="topbar">
+    <div></div>
+    <div>
+      <div class="title">ALPHA SURVEILLANCE BOARD — CLIENT INTAKE</div>
+      <div class="sub">ACTIVE CLIENTS UNDER WATCH • SECURE STEP-BY-STEP PROFILE FORM</div>
     </div>
+    <div class="logo">α</div>
+  </div>
 
-    <!-- Main Data Entry Container -->
-    <div class="container" id="mainContainer">
-        <div class="header">
-            <h1>ALPHA <span>DATA ENTRY</span></h1>
-            <p>Secure Data Collection System v2.0</p>
-        </div>
+  <div class="deadline hide" id="line2Deadline">
+    <div><b>LINE 2 DEAD REPORT:</b> Only for Line 2 profile. If the client is dead, click this and mention the reason.</div>
+    <button class="deathBtn" type="button" id="deathBtn">MARK DEAD / DECEASED</button>
+  </div>
 
-        <div class="user-info-bar">
-            <div class="welcome-user">
-                Welcome, <span id="currentUser">User</span> 👋
-            </div>
-            <button class="logout-btn" id="logoutBtn">
-                <span>🚪</span> SIGN OUT
-            </button>
-        </div>
+  <div class="tabs">
+    <button class="tab active" data-target="#line1">LINE 1 INTAKE</button>
+    <button class="tab" data-target="#line2">LINE 2 SECURE WIZARD</button>
+  </div>
 
-        <div class="user-id-display">
-            <div class="user-id-label">CURRENT USER</div>
-            <div class="user-id-value" id="userIdDisplay">-</div>
-            <div class="timestamp" id="timestampDisplay"></div>
-        </div>
-
-        <div class="stats-container">
-            <div class="stat-box">
-                <div class="stat-label">TOTAL ENTRIES</div>
-                <div class="stat-value" id="totalEntries">0</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">TODAY'S ENTRIES</div>
-                <div class="stat-value" id="todayEntries">0</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">BALANCE</div>
-                <div class="stat-value" id="balance">0</div>
-            </div>
-        </div>
-
-        <form id="dataEntryForm">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>
-                        User ID
-                        <span class="required-star">*</span>
-                    </label>
-                    <input type="text" id="userId" name="userId" readonly value="">
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        Time Stamp
-                        <span class="required-star">*</span>
-                    </label>
-                    <input type="text" id="timestamp" name="timestamp" readonly value="">
-                </div>
-
-                <div class="form-group full-width">
-                    <label>
-                        Full Name
-                        <span class="required-star">*</span>
-                    </label>
-                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
-                </div>
-
-                <div class="form-group full-width">
-                    <label>
-                        FIR Number
-                        <span class="required-star">*</span>
-                    </label>
-                    <input type="text" id="firNo" name="firNo" placeholder="Enter FIR number" required>
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        Age
-                        <span class="required-star">*</span>
-                    </label>
-                    <input type="number" id="age" name="age" placeholder="Enter age" min="1" max="120" required>
-                    <div class="error-message" id="ageError" style="display: none;">Age is required</div>
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        Phone Number
-                        <span class="required-star">*</span>
-                    </label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter 10-digit number" pattern="[0-9]{10}" maxlength="10" required>
-                    <div class="error-message" id="phoneError" style="display: none;">Valid 10-digit phone number is required</div>
-                </div>
-
-                <div class="form-group full-width">
-                    <label>
-                        Location Name
-                        <span class="required-star">*</span>
-                    </label>
-                    <input type="text" id="location" name="location" placeholder="Enter location name" required>
-                </div>
-
-                <div class="form-group full-width" id="pdfUploadSection" style="display: none;">
-                    <label>
-                        FIR PDF Document (REQUIRED for this entry)
-                        <span class="required-star">*</span>
-                    </label>
-                    <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('pdfFile').click()">
-                        <div class="file-upload-icon">📄</div>
-                        <div class="file-upload-text">⚠️ SURPRISE VERIFICATION REQUIRED!</div>
-                        <div class="file-upload-hint">Please attach the FIR PDF file for this entry</div>
-                    </div>
-                    <input type="file" id="pdfFile" accept=".pdf" style="display: none;">
-                    <div id="fileInfo" style="display: none;"></div>
-                    <div class="error-message" id="pdfError" style="display: none;">PDF file is required for this entry</div>
-                </div>
-            </div>
-
-            <div class="button-group">
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    <span>📤</span> SUBMIT ENTRY
-                </button>
-                <button type="button" class="btn btn-secondary" id="resetBtn">
-                    <span>🔄</span> RESET FORM
-                </button>
-            </div>
-        </form>
-
-        <div class="status" id="statusMessage"></div>
-
-        <div class="recent-entries">
-            <h3>
-                <span>📋</span> Recent Entries
-                <span style="font-size: 12px; color: #9a9bc7; font-weight: normal;">(Last 5 submissions)</span>
-            </h3>
-            <div class="entries-list" id="recentEntriesList">
-                <div class="entry-item" style="justify-content: center; color: #9a9bc7;">
-                    No entries yet
-                </div>
-            </div>
-        </div>
+  <form id="line1" class="panel">
+    <h2>Line 1 Basic Intake</h2>
+    <div class="grid">
+      <div class="col-4"><label>Line 1 Player ID *</label><select name="line1Id" id="l1_slot" required><option value="">Select Identifier</option></select></div>
+      <div class="col-8"><label>Player Name *</label><input name="playerName" required placeholder="Enter full name"></div>
+      <div class="col-12"><label>Customer Profile</label><input name="customer" placeholder="Customer identifier"></div>
+      <div class="col-6"><label>Contact Number</label><input name="number" type="tel" placeholder="Primary contact number"></div>
+      <div class="col-6"><label>Language</label><select name="language"><option value="">Select Language</option><option>Hindi</option><option>English</option><option>Gujarati</option><option>Bengali</option><option>Marathi</option><option>Punjabi</option><option>Other</option></select></div>
+      <div class="col-3"><label>Age</label><input name="age"></div>
+      <div class="col-3"><label>Gender</label><select name="gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+      <div class="col-6"><label>Location</label><input name="location" placeholder="Current location"></div>
+      <div class="col-6"><label>Profession</label><input name="profession" placeholder="Occupation"></div>
+      <div class="col-12"><label>Additional Notes</label><textarea name="remarks"></textarea></div>
     </div>
+    <div class="actions"><button class="btn" type="submit">SUBMIT LINE 1</button></div>
+    <div id="status1"></div>
+  </form>
 
-    <script>
-        // ✅ YOUR GOOGLE SCRIPT URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDeKoGDHHJ00JvbaIbE_IX6YnsTKE9IfxeGmFe_ywVoXaz52-IZQpMCUOwHZNnUUgx7w/exec';
+  <form id="line2" class="panel hide">
+    <div class="wizardTop">
+      <aside class="steps" id="stepList"></aside>
+      <main>
+        <div class="progressOuter"><div class="progressInner" id="progressInner"></div></div>
+        <div class="actions" style="justify-content:space-between;margin-top:0;margin-bottom:16px">
+          <button class="btn red" type="button" id="deadReportTop">DEAD REPORT</button>
+          <button class="btn" type="button" id="downloadPdfTop">DOWNLOAD LINE 2 PDF</button>
+        </div>
 
-        const AUTHORIZED_USERS = [
-            'DataCloud1', 'DataCloud2', 'DataCloud3', 'DataCloud4', 'DataCloud5',
-            'DataCloud6', 'DataCloud7', 'DataCloud8', 'DataCloud9', 'DataCloud10'
-        ];
-        const PASSWORD = 'Alpha1234';
+        <section class="wizardStep" data-step="0">
+          <div class="stepTitle">Step 1 — Personal Identity</div>
+          <div class="grid">
+            <div class="col-6"><label>Client Name *</label><input name="clientName" required></div>
+            <div class="col-3"><label>Date of Birth</label><input type="date" name="dob"></div>
+            <div class="col-3"><label>Age</label><input type="number" min="0" name="age"></div>
+            <div class="col-3"><label>Date</label><input type="date" name="date"></div>
+            <div class="col-3"><label>Time</label><input type="time" name="time"></div>
+            <div class="col-3"><label>Language</label><select name="language"><option value="">Select</option><option>English</option><option>Hindi</option><option>Gujarati</option><option>Other</option></select></div>
+            <div class="col-3"><label>Gender</label><select name="gender"><option value=""></option><option>Male</option><option>Female</option><option>Other</option></select></div>
+            <div class="col-4"><label>Line 1</label><select id="l2_line1" name="line1"><option value="">Select</option></select></div>
+            <div class="col-4"><label>Line 2</label><select id="l2_line2" name="line2"><option value="">Select</option></select></div>
+            <div class="col-4"><label>Line 3</label><select name="line3"><option value="">Select</option><option>C1</option><option>C2</option></select></div>
+            <div class="col-3"><label>Aadhaar Number</label><input name="aadhaar"></div>
+            <div class="col-3"><label>Nationality</label><input name="nationality"></div>
+            <div class="col-3"><label>Place of Birth</label><input name="pob"></div>
+            <div class="col-3"><label>Current Location</label><input name="currentLocation"></div>
+          </div>
+        </section>
 
-        // ===== CLEAR ALL PREVIOUS DATA ON PAGE LOAD =====
-        (function clearAllPreviousData() {
-            // Clear ALL localStorage items related to our app
-            const keysToRemove = [];
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.includes('_entryCount') || 
-                    key.includes('_entries') || 
-                    key.includes('_nextVerification') ||
-                    key.includes('_requiresVerification') ||
-                    key.includes('_currentVerificationFile') ||
-                    key === 'isLoggedIn' ||
-                    key === 'loggedInUser') {
-                    keysToRemove.push(key);
-                }
-            }
-            
-            // Remove all found keys
-            keysToRemove.forEach(key => localStorage.removeItem(key));
-            
-            console.log('✅ All previous data cleared from localStorage');
-        })();
+        <section class="wizardStep hide" data-step="1">
+          <div class="stepTitle">Step 2 — Contact & Residence</div>
+          <div class="grid">
+            <div class="col-3"><label>Number Active</label><select name="numberActive"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>WhatsApp</label><select name="whatsapp"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>Phone Number</label><input name="phone1"></div>
+            <div class="col-3"><label>2nd Number</label><input name="phone2"></div>
+            <div class="col-3"><label>Emergency No</label><input name="emergencyNo"></div>
+            <div class="col-6"><label>Email</label><input type="email" name="email"></div>
+            <div class="col-3"><label>Third Party Y/N</label><select name="thirdParty"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-12"><label>Current Address</label><input name="currentAddress"></div>
+          </div>
+        </section>
 
-        function generateNextVerification(lastVerification) {
-            const randomGap = Math.floor(Math.random() * 11) + 40;
-            return lastVerification + randomGap;
-        }
+        <section class="wizardStep hide" data-step="2">
+          <div class="stepTitle">Step 3 — Family Members</div>
+          <div class="grid">
+            <div class="col-3"><label>Marriage Y/N</label><select name="marriage"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>Kids</label><select name="kids"><option value=""></option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select></div>
+            <div class="col-3"><label>Date of Marriage</label><input type="date" name="dom"></div>
+          </div><br>
+          <div class="tableWrap"><table id="familyTable"><thead><tr><th>Member</th><th>Age</th><th>Job</th><th>Work/School Time</th><th>Home Time</th><th>Work Off</th><th>Remarks</th><th>Expected Visitors</th><th></th></tr></thead><tbody></tbody></table></div>
+          <div class="actions"><button type="button" class="btn" onclick="L2.addFamilyRow()">ADD FAMILY MEMBER</button></div>
+        </section>
 
-        function initializeUserVerification(username) {
-            if (!localStorage.getItem(`${username}_nextVerification`)) {
-                const firstVerification = Math.floor(Math.random() * 11) + 40;
-                localStorage.setItem(`${username}_nextVerification`, firstVerification.toString());
-            }
-        }
+        <section class="wizardStep hide" data-step="3">
+          <div class="stepTitle">Step 4 — Call Section</div>
+          <div class="tableWrap"><table id="callTable"><thead><tr><th>Relation</th><th>Time</th><th>Reason</th><th>Duration</th><th>Platform</th><th>1st</th><th>2nd</th><th>3rd</th><th>4th</th><th>5th</th><th>6th</th><th></th></tr></thead><tbody></tbody></table></div>
+          <div class="actions"><button type="button" class="btn" onclick="L2.addCallRow()">ADD CALL LOG</button></div>
+        </section>
 
-        function requiresVerification(username) {
-            const entryCount = parseInt(localStorage.getItem(`${username}_entryCount`) || '0');
-            const nextVerification = parseInt(localStorage.getItem(`${username}_nextVerification`) || '999999');
-            return (entryCount + 1 === nextVerification);
-        }
+        <section class="wizardStep hide" data-step="4">
+          <div class="stepTitle">Step 5 — Bank Section</div>
+          <div class="tableWrap"><table id="bankTable"><thead><tr><th>Bank</th><th>S/J</th><th>Type</th><th>Year</th><th>Purpose</th><th>Cheque</th><th>Passbook</th><th>Internet</th><th>Phone</th><th>UPI</th><th>PhonePe</th><th>GPay</th><th>CB</th><th>FD</th><th>Distance</th><th></th></tr></thead><tbody></tbody></table></div>
+          <div class="actions"><button type="button" class="btn" onclick="L2.addBankRow()">ADD BANK ACCOUNT</button></div>
+        </section>
 
-        function updateNextVerification(username) {
-            const currentNextVerification = parseInt(localStorage.getItem(`${username}_nextVerification`) || '0');
-            const newNextVerification = generateNextVerification(currentNextVerification);
-            localStorage.setItem(`${username}_nextVerification`, newNextVerification.toString());
-        }
+        <section class="wizardStep hide" data-step="5">
+          <div class="stepTitle">Step 6 — Work, Devices & Assets</div>
+          <div class="grid">
+            <div class="col-3"><label>Education</label><select name="education"><option value=""></option><option>Uneducated</option><option>Higher Edu</option><option>Bachelor</option><option>Master</option><option>Doctor/PHD</option></select></div>
+            <div class="col-3"><label>Work Status</label><select name="workYN"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>Position</label><input name="position"></div>
+            <div class="col-3"><label>Employment Type</label><select name="employment"><option value=""></option><option>Employed</option><option>Self-Employed</option><option>Student</option><option>Retired</option></select></div>
+            <div class="col-3"><label>Working Since</label><input type="number" name="workSince"></div>
+            <div class="col-6"><label>Company Name</label><input name="companyName"></div>
+            <div class="col-3"><label>Charging %</label><input type="number" min="0" max="100" name="charging"></div>
+            <div class="col-3"><label>Plugin</label><input name="plugin"></div>
+            <div class="col-3"><label>Phone Model</label><input name="phoneModel"></div>
+            <div class="col-3"><label>Other Phone</label><select name="otherPhoneYN"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>Laptop</label><select name="laptopYN"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>2-Wheeler</label><select name="twoWheelerYN"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>4-Wheeler</label><select name="fourWheelerYN"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>Total Vehicles</label><input type="number" min="0" name="totalVehicle"></div>
+            <div class="col-3"><label>Height cm</label><input type="number" min="0" name="height"></div>
+            <div class="col-3"><label>Weight kg</label><input type="number" min="0" name="weight"></div>
+            <div class="col-3"><label>Color Tone</label><input name="colorTone"></div>
+            <div class="col-3"><label>Passport</label><select name="passportYN"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>Voter ID</label><select name="voterIdYN"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>Visa Rejected</label><select name="visaRejected"><option value=""></option><option>Y</option><option>N</option></select></div>
+            <div class="col-3"><label>Overstay</label><select name="overstayYN"><option value=""></option><option>Y</option><option>N</option></select></div>
+          </div><br>
+          <div class="assetGrid" id="assetGrid"></div>
+          <br><label>Asset Notes</label><textarea id="assetNotes"></textarea>
+        </section>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Don't auto-login - start fresh
-            document.getElementById('loginContainer').style.display = 'block';
-            
-            document.getElementById('loginBtn').addEventListener('click', handleLogin);
-            document.getElementById('username').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') handleLogin();
-            });
-            document.getElementById('password').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') handleLogin();
-            });
-            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-            document.getElementById('pdfFile').addEventListener('change', handleFileSelect);
-        });
+        <section class="wizardStep hide" data-step="6">
+          <div class="stepTitle">Step 7 — Final Review & Download Line 2 PDF</div>
+          <p style="color:var(--muted);font-size:17px">Review all filled data below. Previous details remain visible here, but the form was filled one section at a time.</p>
+          <div class="preview" id="finalPreview"></div>
+          <div class="actions">
+            <button class="btn orange" type="button" id="saveDraft">SAVE DRAFT</button>
+            <button class="btn orange" type="button" id="loadDraft">LOAD DRAFT</button>
+            <button class="btn" type="button" id="downloadPdf">DOWNLOAD LINE 2 PDF</button>
+          </div>
+        </section>
 
-        function handleLogin() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            const loginError = document.getElementById('loginError');
-            
-            if (AUTHORIZED_USERS.includes(username) && password === PASSWORD) {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('loggedInUser', username);
-                
-                // Initialize THIS user's counter fresh
-                localStorage.setItem(`${username}_entryCount`, '0');
-                
-                initializeUserVerification(username);
-                showMainContainer(username);
-                loginError.classList.remove('show');
-            } else {
-                loginError.classList.add('show');
-                document.getElementById('username').classList.add('error');
-                document.getElementById('password').classList.add('error');
-                
-                setTimeout(() => {
-                    document.getElementById('username').classList.remove('error');
-                    document.getElementById('password').classList.remove('error');
-                }, 3000);
-            }
-        }
+        <div class="preview" id="livePreview"></div>
+        <div class="actions">
+          <button class="btn orange" type="button" id="prevStep">BACK</button>
+          <button class="btn" type="button" id="nextStep">NEXT</button>
+        </div>
+        <div id="status2"></div>
+      </main>
+    </div>
+  </form>
+</div>
 
-        function handleLogout() {
-            // Clear only session data, keep user's entry data
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('loggedInUser');
-            
-            document.getElementById('mainContainer').classList.remove('show');
-            document.getElementById('loginContainer').style.display = 'block';
-            
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('loginError').classList.remove('show');
-        }
+<dialog id="deathDialog">
+  <div class="modalHead">CLIENT DECEASED CONFIRMATION</div>
+  <div class="modalBody">
+    <label>Death Date / Deadline Date</label><input type="date" id="deathDate"><br><br>
+    <label>Reason Why Client Is Dead *</label><textarea id="deathReason" placeholder="Mention clear reason here..."></textarea>
+  </div>
+  <div class="modalFoot"><button class="btn" type="button" id="cancelDeath">Cancel</button><button class="btn red" type="button" id="confirmDeath">Confirm Deceased</button></div>
+</dialog>
 
-        function showMainContainer(username) {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('mainContainer').classList.add('show');
-            document.getElementById('currentUser').textContent = username;
-            document.getElementById('userId').value = username;
-            document.getElementById('userIdDisplay').textContent = username;
-            
-            // Reset display for this user
-            document.getElementById('recentEntriesList').innerHTML = '<div class="entry-item" style="justify-content: center; color: #9a9bc7;">No entries yet</div>';
-            document.getElementById('totalEntries').textContent = '0';
-            document.getElementById('todayEntries').textContent = '0';
-            document.getElementById('balance').textContent = '0';
-            
-            initializeDataEntry(username);
-        }
+<script>
+const SCRIPT_URL_LINE1='https://script.google.com/macros/s/AKfycbzjna6m4tmO2nN3f75P8iSSciwGUrN5CpGiBrjVdRGkCIFeOOyjfKJn6oskR6cnxrwzsw/exec';
+const SCRIPT_URL_LINE2='https://script.google.com/macros/s/AKfycbyw_04eWrvnHktSpI0iuoutd_Fs3HMfUn6d6gz0xeIJj4OzleSrJOIIWmQNgqSOdmTz/exec';
+const state={step:0, death:{status:'ACTIVE',date:'',reason:''}};
+const stepNames=['Personal Identity','Contact & Residence','Family Members','Call Section','Bank Section','Work, Devices & Assets','Final Review'];
 
-        function initializeDataEntry(username) {
-            updateTimestamp();
-            setupValidation();
-            
-            // Remove any old event listeners
-            const oldForm = document.getElementById('dataEntryForm');
-            const newForm = oldForm.cloneNode(true);
-            oldForm.parentNode.replaceChild(newForm, oldForm);
-            
-            // Add fresh event listeners
-            document.getElementById('dataEntryForm').addEventListener('submit', (e) => handleSubmit(e, username));
-            document.getElementById('resetBtn').addEventListener('click', () => resetForm(username));
-            document.getElementById('pdfFile').addEventListener('change', handleFileSelect);
-            
-            checkAndShowVerification(username);
-        }
+function qs(s,p=document){return p.querySelector(s)}function qsa(s,p=document){return [...p.querySelectorAll(s)]}
+qsa('.tab').forEach(btn=>btn.onclick=()=>{qsa('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');qsa('form.panel').forEach(f=>f.classList.add('hide'));qs(btn.dataset.target).classList.remove('hide');qs('#line2Deadline').classList.toggle('hide',btn.dataset.target!=='#line2')});
+for(let i=1;i<=51;i+=2)qs('#l1_slot').add(new Option('X'+i,'X'+i));
+for(let i=1;i<=51;i+=2)qs('#l2_line1').add(new Option('X'+i,'X'+i));
+for(let i=2;i<=32;i+=2)qs('#l2_line2').add(new Option('X'+i,'X'+i));
 
-        function checkAndShowVerification(username) {
-            const pdfSection = document.getElementById('pdfUploadSection');
-            
-            if (requiresVerification(username)) {
-                pdfSection.style.display = 'block';
-                localStorage.setItem(`${username}_requiresVerification`, 'true');
-                pdfSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else {
-                pdfSection.style.display = 'none';
-                localStorage.removeItem(`${username}_requiresVerification`);
-                localStorage.removeItem(`${username}_currentVerificationFile`);
-            }
-        }
+const L2={
+ tableToArray(tbody,keys){return qsa('tr',tbody).map(tr=>{const inp=qsa('input,select,textarea',tr);const o={};keys.forEach((k,i)=>o[k]=inp[i]?inp[i].value:'');return o})},
+ addFamilyRow(o={}){const tr=document.createElement('tr');tr.innerHTML=['member','age','job','workTime','homeTime','workOff','remarks','expectedVisitors'].map(k=>`<td><input value="${o[k]||''}" placeholder="${k}"></td>`).join('')+'<td><button type="button" class="btn red" onclick="this.closest(`tr`).remove();refreshPreview()">Remove</button></td>';qs('#familyTable tbody').appendChild(tr);bindInputs()},
+ addCallRow(o={}){const keys=['relation','time','reason','duration','platform','c1','c2','c3','c4','c5','c6'];const tr=document.createElement('tr');tr.innerHTML=keys.map((k,i)=>`<td><input ${k==='time'?'type="time"':''} value="${o[k]||''}" placeholder="${i>4?i-4:k}"></td>`).join('')+'<td><button type="button" class="btn red" onclick="this.closest(`tr`).remove();refreshPreview()">Remove</button></td>';qs('#callTable tbody').appendChild(tr);bindInputs()},
+ addBankRow(o={}){const keys=['name','singleJoint','type','year','purpose','chequeBook','passbook','internetBanking','phoneBanking','upi','phonepe','googlepay','closingBalance','fd','distance'];const tr=document.createElement('tr');tr.innerHTML=keys.map(k=>`<td><input value="${o[k]||''}" placeholder="${k}"></td>`).join('')+'<td><button type="button" class="btn red" onclick="this.closest(`tr`).remove();refreshPreview()">Remove</button></td>';qs('#bankTable tbody').appendChild(tr);bindInputs()}
+};
+window.L2=L2;
 
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            const fileInfo = document.getElementById('fileInfo');
-            const fileUploadArea = document.getElementById('fileUploadArea');
-            const pdfError = document.getElementById('pdfError');
-            
-            if (file) {
-                if (file.type !== 'application/pdf') {
-                    pdfError.textContent = 'Only PDF files are allowed';
-                    pdfError.style.display = 'flex';
-                    fileUploadArea.classList.add('error');
-                    document.getElementById('pdfFile').value = '';
-                    return;
-                }
-                
-                if (file.size > 5 * 1024 * 1024) {
-                    pdfError.textContent = 'File size must be less than 5MB';
-                    pdfError.style.display = 'flex';
-                    fileUploadArea.classList.add('error');
-                    document.getElementById('pdfFile').value = '';
-                    return;
-                }
-                
-                pdfError.style.display = 'none';
-                fileUploadArea.classList.remove('error');
-                
-                fileInfo.style.display = 'block';
-                fileInfo.innerHTML = `
-                    <div class="file-info">
-                        <div class="file-name">
-                            <span>📄</span> ${file.name}
-                        </div>
-                        <div class="remove-file" onclick="removeFile()">✕</div>
-                    </div>
-                `;
-                
-                const username = localStorage.getItem('loggedInUser');
-                const fileData = {
-                    name: file.name,
-                    size: file.size,
-                    lastModified: file.lastModified
-                };
-                localStorage.setItem(`${username}_currentVerificationFile`, JSON.stringify(fileData));
-            }
-        }
+function initAssets(){const assets=['RD','Mutual Funds','Shares','Gold','Diamond','Silver','Vehicle','Real Estate','Cash','Crypto','PPF','PF','EPF','GPF','Coins','Limited Books','Exp. Watches'];qs('#assetGrid').innerHTML=assets.map(a=>{const id=a.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/_$/,'');return `<div class="assetCard"><label><input type="checkbox" id="asset_${id}"> ${a}</label><input type="number" min="0" step="0.01" id="asset_${id}_amt" placeholder="Amount"></div>`}).join('')}
+function renderStepList(){qs('#stepList').innerHTML=stepNames.map((n,i)=>`<div class="stepItem ${i===state.step?'active':''} ${i<state.step?'done':''}">${String(i+1).padStart(2,'0')} — ${n}</div>`).join('')}
+function showStep(){qsa('.wizardStep').forEach((s,i)=>s.classList.toggle('hide',i!==state.step));renderStepList();qs('#progressInner').style.width=((state.step+1)/stepNames.length*100)+'%';qs('#prevStep').style.display=state.step===0?'none':'inline-block';qs('#nextStep').textContent=state.step===stepNames.length-1?'FINISH':'NEXT';refreshPreview();window.scrollTo({top:0,behavior:'smooth'})}
+function bindInputs(){qsa('#line2 input,#line2 select,#line2 textarea').forEach(el=>el.oninput=refreshPreview)}
+function collectBase(){const form=qs('#line2');const obj=Object.fromEntries(new FormData(form).entries());obj.clientStatus=state.death.status;obj.deathDate=state.death.date;obj.deathReason=state.death.reason;return obj}
+function collectAll(){return{base:collectBase(),fam:L2.tableToArray(qs('#familyTable tbody'),['member','age','job','workTime','homeTime','workOff','remarks','expectedVisitors']),calls:L2.tableToArray(qs('#callTable tbody'),['relation','time','reason','duration','platform','c1','c2','c3','c4','c5','c6']),banks:L2.tableToArray(qs('#bankTable tbody'),['name','singleJoint','type','year','purpose','chequeBook','passbook','internetBanking','phoneBanking','upi','phonepe','googlepay','closingBalance','fd','distance']),assets:collectAssets(),assetNotes:qs('#assetNotes').value}}
+function collectAssets(){return qsa('#assetGrid .assetCard').map(card=>{const label=card.querySelector('label').innerText.trim();const chk=card.querySelector('input[type=checkbox]');const amt=card.querySelector('input[type=number]');return {asset:label,has:chk.checked?'Yes':'No',amount:amt.value||''}}).filter(a=>a.has==='Yes'||a.amount)}
+function refreshPreview(){const d=collectAll();const filled=Object.entries(d.base).filter(([k,v])=>v).slice(0,20).map(([k,v])=>`<b>${k}:</b> ${v}`).join(' &nbsp; | &nbsp; ');qs('#livePreview').innerHTML=filled||'Live preview: fill current step to see previous details here.';qs('#finalPreview').innerHTML=`<b>Status:</b> ${d.base.clientStatus}<br>${filled}<br><br><b>Family Rows:</b> ${d.fam.filter(x=>x.member).length} | <b>Call Rows:</b> ${d.calls.filter(x=>x.relation).length} | <b>Bank Rows:</b> ${d.banks.filter(x=>x.name).length} | <b>Assets:</b> ${d.assets.length}`}
 
-        function removeFile() {
-            document.getElementById('pdfFile').value = '';
-            document.getElementById('fileInfo').style.display = 'none';
-            document.getElementById('fileUploadArea').classList.remove('error');
-            
-            const username = localStorage.getItem('loggedInUser');
-            localStorage.removeItem(`${username}_currentVerificationFile`);
-        }
+qs('#prevStep').onclick=()=>{if(state.step>0){state.step--;showStep()}};
+qs('#nextStep').onclick=()=>{if(state.step<stepNames.length-1){state.step++;showStep()}else refreshPreview()};
+qs('#saveDraft').onclick=()=>{localStorage.setItem('alpha_surveillance_draft',JSON.stringify(collectAll()));msg('status2','Draft saved successfully.')};
+qs('#loadDraft').onclick=()=>{const raw=localStorage.getItem('alpha_surveillance_draft');if(!raw)return msg('status2','No draft found.');loadDraft(JSON.parse(raw));msg('status2','Draft loaded successfully.')};
+function loadDraft(d){Object.entries(d.base||{}).forEach(([k,v])=>{const el=qs('#line2').elements[k];if(el)el.value=v});state.death={status:d.base?.clientStatus||'ACTIVE',date:d.base?.deathDate||'',reason:d.base?.deathReason||''};updateDeathBtn();qs('#familyTable tbody').innerHTML='';(d.fam||[]).forEach(r=>L2.addFamilyRow(r));qs('#callTable tbody').innerHTML='';(d.calls||[]).forEach(r=>L2.addCallRow(r));qs('#bankTable tbody').innerHTML='';(d.banks||[]).forEach(r=>L2.addBankRow(r));showStep()}
+function msg(id,t){const s=qs('#'+id);s.textContent=t;s.className='status';setTimeout(()=>s.textContent='',3000)}
 
-        function updateTimestamp() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            
-            const timestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-            document.getElementById('timestamp').value = timestamp;
-            document.getElementById('timestampDisplay').textContent = timestamp;
-        }
+qs('#deathBtn').onclick=()=>qs('#deathDialog').showModal();qs('#cancelDeath').onclick=()=>qs('#deathDialog').close();
+qs('#confirmDeath').onclick=()=>{const reason=qs('#deathReason').value.trim();if(!reason){alert('Please mention the reason why client is dead.');return}state.death={status:'DECEASED',date:qs('#deathDate').value,reason};updateDeathBtn();qs('#deathDialog').close();refreshPreview()};
+function updateDeathBtn(){const b=qs('#deathBtn');b.classList.toggle('active',state.death.status==='DECEASED');b.textContent=state.death.status==='DECEASED'?'DECEASED MARKED':'MARK DECEASED'}
 
-        function setupValidation() {
-            const ageInput = document.getElementById('age');
-            const phoneInput = document.getElementById('phone');
+qs('#line1').addEventListener('submit',async e=>{e.preventDefault();msg('status1','Submitting Line 1 data...');try{await fetch(SCRIPT_URL_LINE1,{method:'POST',mode:'no-cors',body:new URLSearchParams(new FormData(e.target))});msg('status1','Line 1 submitted successfully.');e.target.reset()}catch(err){msg('status1','Submission may have failed. Please verify connection.')}});
 
-            ageInput.addEventListener('input', validateAge);
-            phoneInput.addEventListener('input', validatePhone);
-        }
+qs('#downloadPdf').onclick=generatePDF;
+qs('#downloadPdfTop').onclick=generatePDF;
+qs('#deadReportTop').onclick=()=>qs('#deathDialog').showModal();
+function generatePDF(){
+ const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const d=collectAll();const pageW=doc.internal.pageSize.getWidth(), pageH=doc.internal.pageSize.getHeight();let y=18;const m=12;
+ function header(){doc.setFillColor(3,8,7);doc.rect(0,0,pageW,18,'F');doc.setTextColor(0,255,157);doc.setFont('helvetica','bold');doc.setFontSize(13);doc.text('ALPHA SURVEILLANCE BOARD — CLIENT REPORT',m,11);doc.setTextColor(34,230,255);doc.setFontSize(8);doc.text(new Date().toLocaleString(),pageW-m-42,11)}
+ function section(t){if(y>260){doc.addPage();y=22;header()}doc.setFillColor(7,18,15);doc.rect(m,y,pageW-m*2,8,'F');doc.setTextColor(0,255,157);doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(t,m+2,y+5.5);y+=12}
+ header();y=25;section('LINE 2 DEAD REPORT');
+ doc.autoTable({startY:y,head:[['Status','Death Date','Reason']],body:[[d.base.clientStatus,d.base.deathDate||'-',d.base.deathReason||'-']],theme:'grid',styles:{fontSize:9,textColor:[220,255,238],fillColor:[3,8,7],lineColor:[0,120,80]},headStyles:{fillColor:[12,35,28],textColor:[0,255,157]}});y=doc.lastAutoTable.finalY+8;
+ section('PERSONAL DETAILS');
+ const baseRows=Object.entries(d.base).filter(([k,v])=>v&& !['clientStatus','deathDate','deathReason'].includes(k)).map(([k,v])=>[k,v]);
+ doc.autoTable({startY:y,body:baseRows,theme:'grid',styles:{fontSize:8,textColor:[220,255,238],fillColor:[3,8,7],lineColor:[0,120,80]},columnStyles:{0:{textColor:[34,230,255],fontStyle:'bold'}}});y=doc.lastAutoTable.finalY+8;
+ if(d.fam.some(r=>r.member)){section('FAMILY MEMBERS');doc.autoTable({startY:y,head:[['Member','Age','Job','Work/School','Home','Off','Remarks','Visitors']],body:d.fam.filter(r=>r.member).map(r=>[r.member,r.age,r.job,r.workTime,r.homeTime,r.workOff,r.remarks,r.expectedVisitors]),theme:'grid',styles:{fontSize:7,textColor:[220,255,238],fillColor:[3,8,7],lineColor:[0,120,80]},headStyles:{fillColor:[12,35,28],textColor:[0,255,157]}});y=doc.lastAutoTable.finalY+8}
+ if(d.calls.some(r=>r.relation)){section('CALL SECTION');doc.autoTable({startY:y,head:[['Relation','Time','Reason','Duration','Platform','1','2','3','4','5','6']],body:d.calls.filter(r=>r.relation).map(r=>[r.relation,r.time,r.reason,r.duration,r.platform,r.c1,r.c2,r.c3,r.c4,r.c5,r.c6]),theme:'grid',styles:{fontSize:6.5,textColor:[220,255,238],fillColor:[3,8,7],lineColor:[0,120,80]},headStyles:{fillColor:[12,35,28],textColor:[0,255,157]}});y=doc.lastAutoTable.finalY+8}
+ if(d.banks.some(r=>r.name)){section('BANK SECTION');doc.autoTable({startY:y,head:[['Bank','S/J','Type','Year','Purpose','Cheque','Pass','Net','Phone','UPI','PhonePe','GPay','CB','FD','Dist']],body:d.banks.filter(r=>r.name).map(r=>[r.name,r.singleJoint,r.type,r.year,r.purpose,r.chequeBook,r.passbook,r.internetBanking,r.phoneBanking,r.upi,r.phonepe,r.googlepay,r.closingBalance,r.fd,r.distance]),theme:'grid',styles:{fontSize:5.8,textColor:[220,255,238],fillColor:[3,8,7],lineColor:[0,120,80]},headStyles:{fillColor:[12,35,28],textColor:[0,255,157]}});y=doc.lastAutoTable.finalY+8}
+ if(d.assets.length||d.assetNotes){section('ASSETS');doc.autoTable({startY:y,head:[['Asset','Has','Amount']],body:d.assets.map(a=>[a.asset,a.has,a.amount||'-']),theme:'grid',styles:{fontSize:8,textColor:[220,255,238],fillColor:[3,8,7],lineColor:[0,120,80]},headStyles:{fillColor:[12,35,28],textColor:[0,255,157]}});y=doc.lastAutoTable.finalY+8;if(d.assetNotes){doc.setTextColor(220,255,238);doc.setFontSize(9);doc.text(doc.splitTextToSize('Asset Notes: '+d.assetNotes,pageW-m*2),m,y)}}
+ const pages=doc.internal.getNumberOfPages();for(let i=1;i<=pages;i++){doc.setPage(i);doc.setDrawColor(0,255,157);doc.line(m,pageH-10,pageW-m,pageH-10);doc.setTextColor(34,230,255);doc.setFontSize(7);doc.text('ALPHA Line 2 Surveillance PDF',m,pageH-5);doc.text(`Page ${i} of ${pages}`,pageW-m-20,pageH-5)}
+ const name=(d.base.clientName||'Client').replace(/\s+/g,'_');doc.save(`ALPHA_Line2_Surveillance_Report_${name}.pdf`);msg('status2','Line 2 PDF downloaded successfully.')
+}
 
-        function validateAge() {
-            const age = document.getElementById('age').value;
-            const ageError = document.getElementById('ageError');
-            const ageInput = document.getElementById('age');
-
-            if (!age || age.trim() === '') {
-                ageError.style.display = 'flex';
-                ageInput.classList.add('error');
-                return false;
-            } else {
-                ageError.style.display = 'none';
-                ageInput.classList.remove('error');
-                return true;
-            }
-        }
-
-        function validatePhone() {
-            const phone = document.getElementById('phone').value;
-            const phoneError = document.getElementById('phoneError');
-            const phoneInput = document.getElementById('phone');
-            const phoneRegex = /^[0-9]{10}$/;
-
-            if (!phone || phone.trim() === '' || !phoneRegex.test(phone)) {
-                phoneError.style.display = 'flex';
-                phoneInput.classList.add('error');
-                return false;
-            } else {
-                phoneError.style.display = 'none';
-                phoneInput.classList.remove('error');
-                return true;
-            }
-        }
-
-        function validatePDF(username) {
-            const requiresVerification = localStorage.getItem(`${username}_requiresVerification`) === 'true';
-            
-            if (!requiresVerification) return true;
-            
-            const pdfFile = document.getElementById('pdfFile').files[0];
-            const pdfError = document.getElementById('pdfError');
-            
-            if (!pdfFile) {
-                pdfError.textContent = 'PDF file is required for this entry';
-                pdfError.style.display = 'flex';
-                return false;
-            }
-            
-            if (pdfFile.type !== 'application/pdf') {
-                pdfError.textContent = 'Only PDF files are allowed';
-                pdfError.style.display = 'flex';
-                return false;
-            }
-            
-            if (pdfFile.size > 5 * 1024 * 1024) {
-                pdfError.textContent = 'File size must be less than 5MB';
-                pdfError.style.display = 'flex';
-                return false;
-            }
-            
-            pdfError.style.display = 'none';
-            return true;
-        }
-
-        function validateForm(username) {
-            const isAgeValid = validateAge();
-            const isPhoneValid = validatePhone();
-            const isPDFValid = validatePDF(username);
-            
-            const name = document.getElementById('name').value;
-            const firNo = document.getElementById('firNo').value;
-            const location = document.getElementById('location').value;
-
-            if (!name || name.trim() === '') {
-                showStatus('Name is required', 'error');
-                return false;
-            }
-
-            if (!firNo || firNo.trim() === '') {
-                showStatus('FIR Number is required', 'error');
-                return false;
-            }
-
-            if (!location || location.trim() === '') {
-                showStatus('Location is required', 'error');
-                return false;
-            }
-
-            if (!isAgeValid || !isPhoneValid) return false;
-            if (!isPDFValid) return false;
-
-            return true;
-        }
-
-        async function handleSubmit(e, username) {
-            e.preventDefault();
-            
-            if (!validateForm(username)) return;
-
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span>⏳</span> SUBMITTING...';
-
-            let entryCount = parseInt(localStorage.getItem(`${username}_entryCount`) || '0');
-            const newEntryCount = entryCount + 1;
-            
-            const requiredVerification = localStorage.getItem(`${username}_requiresVerification`) === 'true';
-            const pdfFile = document.getElementById('pdfFile').files[0];
-
-            const formData = {
-                userId: document.getElementById('userId').value,
-                entryNumber: newEntryCount,
-                timestamp: document.getElementById('timestamp').value,
-                name: document.getElementById('name').value,
-                firNo: document.getElementById('firNo').value,
-                age: document.getElementById('age').value,
-                phone: document.getElementById('phone').value,
-                location: document.getElementById('location').value,
-                enteredBy: username,
-                verificationRequired: requiredVerification ? 'Yes' : 'No',
-                pdfAttached: requiredVerification ? (pdfFile ? 'Yes' : 'No') : 'N/A',
-                pdfFileName: pdfFile ? pdfFile.name : ''
-            };
-
-            try {
-                const params = new URLSearchParams();
-                Object.keys(formData).forEach(key => params.append(key, formData[key]));
-
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: params
-                });
-
-                localStorage.setItem(`${username}_entryCount`, newEntryCount.toString());
-                
-                if (requiredVerification) {
-                    updateNextVerification(username);
-                }
-                
-                // Save to this user's local storage
-                saveToLocalStorage(formData, username);
-                
-                showStatus(requiredVerification ? '✓ Data submitted successfully with verification!' : '✓ Data submitted successfully!', 'success');
-                
-                // Update stats
-                updateStats(username);
-                updateBalance(username);
-                
-                localStorage.removeItem(`${username}_currentVerificationFile`);
-                
-                resetForm(username);
-
-            } catch (error) {
-                showStatus('⚠ Error submitting data. Please try again.', 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span>📤</span> SUBMIT ENTRY';
-            }
-        }
-
-        function saveToLocalStorage(data, username) {
-            let entries = JSON.parse(localStorage.getItem(`${username}_entries`) || '[]');
-            entries.unshift(data);
-            
-            if (entries.length > 50) entries = entries.slice(0, 50);
-            
-            localStorage.setItem(`${username}_entries`, JSON.stringify(entries));
-            
-            displayRecentEntries(username);
-        }
-
-        function displayRecentEntries(username) {
-            const entries = JSON.parse(localStorage.getItem(`${username}_entries`) || '[]');
-            const recentList = document.getElementById('recentEntriesList');
-            
-            if (entries.length === 0) {
-                recentList.innerHTML = '<div class="entry-item" style="justify-content: center; color: #9a9bc7;">No entries yet</div>';
-                return;
-            }
-
-            let html = '';
-            entries.slice(0, 5).forEach(entry => {
-                const verificationBadge = entry.verificationRequired === 'Yes' ? 
-                    '<span class="verification-badge-small">✓ VERIFIED</span>' : '';
-                    
-                html += `
-                    <div class="entry-item">
-                        <div class="entry-info">
-                            <strong>#${entry.entryNumber}</strong> - ${entry.name} ${verificationBadge}
-                        </div>
-                        <div class="entry-time">${entry.timestamp}</div>
-                    </div>
-                `;
-            });
-            
-            recentList.innerHTML = html;
-        }
-
-        function updateStats(username) {
-            const entries = JSON.parse(localStorage.getItem(`${username}_entries`) || '[]');
-            document.getElementById('totalEntries').textContent = entries.length;
-            
-            const today = new Date().toISOString().split('T')[0];
-            const todayCount = entries.filter(e => e.timestamp.startsWith(today)).length;
-            document.getElementById('todayEntries').textContent = todayCount;
-        }
-
-        function updateBalance(username) {
-            const entries = JSON.parse(localStorage.getItem(`${username}_entries`) || '[]');
-            document.getElementById('balance').textContent = entries.length;
-        }
-
-        function resetForm(username) {
-            document.getElementById('name').value = '';
-            document.getElementById('firNo').value = '';
-            document.getElementById('age').value = '';
-            document.getElementById('phone').value = '';
-            document.getElementById('location').value = '';
-            
-            removeFile();
-            updateTimestamp();
-            
-            document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
-            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-            
-            checkAndShowVerification(username);
-        }
-
-        function showStatus(message, type) {
-            const statusEl = document.getElementById('statusMessage');
-            statusEl.textContent = message;
-            statusEl.className = `status show ${type}`;
-            
-            setTimeout(() => statusEl.classList.remove('show'), 5000);
-        }
-    </script>
+initAssets();L2.addFamilyRow();L2.addCallRow();L2.addBankRow();bindInputs();showStep();
+</script>
 </body>
 </html>
